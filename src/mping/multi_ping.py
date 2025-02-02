@@ -62,7 +62,7 @@ class MultiPing:
             view_recent = 30
             view_sucess  = [green]O
             view_fail    = [red]X
-            view_expired = [yellow]▲
+            view_expired = [yellow]E
 
             [log]
             result_directory = ./results

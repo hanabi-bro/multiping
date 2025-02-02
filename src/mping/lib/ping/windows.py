@@ -210,11 +210,11 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument('dst', type=str, help='Target Address')
-    parser.add_argument('-S', '--src', help='Source Address')
-    parser.add_argument('-t', '--timeout', help='Timeout second', default=1)
-    parser.add_argument('-H', '--ttl', help='Set the IP TTL field', default=16)
-    parser.add_argument('-c', '--count', help='Number of request packets to send', default=1)
-    parser.add_argument('-s', '--size', help='Size of ping data to send', default=64)
+    parser.add_argument('-S', '--src', type=str, help='Source Address')
+    parser.add_argument('-t', '--timeout', type=int, help='Timeout second', default=1)
+    parser.add_argument('-H', '--ttl', type=int, help='Set the IP TTL field', default=32)
+    parser.add_argument('-c', '--count', type=int, help='Number of request packets to send', default=1)
+    parser.add_argument('-s', '--size', type=int, help='Size of ping data to send', default=64)
     args = parser.parse_args()
 
     from pprint import pprint
