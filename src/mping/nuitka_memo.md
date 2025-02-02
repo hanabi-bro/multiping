@@ -6,9 +6,9 @@ python -m nuitka `
   --assume-yes-for-downloads `
   --windows-console-mode=force `
   --output-filename=mping `
-  --include-data-file="./src/booyaa/multi_ping/README.md=./" `
+  --include-data-file="./README.md=./" `
   --windows-icon-from-ico="./icon/booyaa_multi_ping.ico" `
-  ./src/booyaa/multi_ping/multi_ping.py
+  ./src/mping/multi_ping.py
 ```
 
 ## linux

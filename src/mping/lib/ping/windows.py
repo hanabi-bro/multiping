@@ -170,11 +170,11 @@ def parse_success_output(out):
         icmp_code = 0
     elif ttl_expire_msg:
         seq = 0
-        icmp_type = 0
+        icmp_type = 11
         icmp_code = 0
     elif unreacabhle_msg:
         seq = 0
-        icmp_type = 0
+        icmp_type = 3
         icmp_code = 0
     else:
         seq = 0 
@@ -192,11 +192,11 @@ def parse_error_output(out):
         icmp_code = 98
     elif RE_TRANSMIT_FAILE.search(out):
         seq = 0
-        icmp_type = 0
+        icmp_type = 99
         icmp_code = 0
     elif RE_GENERAL_FAILURE.search(out):
         seq = 0
-        icmp_type = 0
+        icmp_type = 99
         icmp_code = 0
     else:
         seq = 0
