@@ -1,6 +1,8 @@
 ### Local ###
+mping.ini
 tmp/
 export/*
+release/
 results/*.csv
 *.dist/
 *.build/
