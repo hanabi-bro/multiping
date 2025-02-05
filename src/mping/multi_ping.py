@@ -54,15 +54,15 @@ class MultiPing:
             """
             [ping]
             TTL = 64
+            timeout = 1
             Retries = 1
             Interval = 1
-            timeout = 1
 
             [tui]
             view_recent = 30
             view_sucess  = [green]O
             view_fail    = [red]X
-            view_expired = [yellow]E
+            view_expired = [yellow]▲
 
             [log]
             result_directory = ./results
