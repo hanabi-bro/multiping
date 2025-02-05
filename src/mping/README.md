@@ -88,19 +88,28 @@ Powershellまたはコマンドプロンプトで実行してください。
 * デフォルトのdestination_list.csv
   - デフォルトのファイルが無い場合は自動で作成。
 ```powershell
-mping.exe
+mping
 ```
 
 ### コマンド引数で宛先指定
 * 「-l」オプションの後に宛先を指定
 * カンマ区切りで複数宛先の定可能
 ```powershell
-mping.exe -l 1.1.1.1,yahoo.co.jp
+mping -l 1.1.1.1,yahoo.co.jp
 ```
 
 ### 宛先ファイルを指定
 * 「-f」オプションの後にファイルパスを指定
   - 実行ディレクトリからの相対パスかフルパスで指定
 ```powershell
-mping.exe  c:\opt\data\dst_list.csv
+mping  c:\opt\data\dst_list.csv
 ```
+
+### タイムアウト指定
+* 「--timeout」オプションの後に秒数を指定
+* 0.5などでミリ秒指定も可能（1秒以下は非推奨）
+
+### TTL指定
+* 「--ttl」オプションの後にTTLを指定
+* 1-255
+

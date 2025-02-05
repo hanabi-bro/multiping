@@ -92,7 +92,7 @@ class MultiPing:
             dst_list = [line.split(',')[0].strip() for line in f.readlines()]
         return dst_list
 
-    def setting(self,  dst_file=None, dst_args=None, ini_file=None):
+    def setting(self,  dst_file=None, dst_args=None, ini_file=None, ping_args={}):
         # iniファイルチェック
         if ini_file and self.file_exsit(Path(ini_file)):
             self.ini_file = Path(ini_file)
@@ -104,10 +104,10 @@ class MultiPing:
         # コンフィグロード
         config = ConfigParser()
         try:
-            config.read(self.ini_file)
+            config.read(self.ini_file, encoding='utf-8')
         except Exception:
             self.gen_ini_file()
-            config.read(self.ini_file)
+            config.read(self.ini_file, encoding='utf-8')
 
         # dstファイルチェック
         # dst_file指定あり
@@ -144,10 +144,14 @@ class MultiPing:
         self.gen_ping_list(dst_list)
 
         # Pingパラメータ
-        self.ttl = int(config.get('ping', 'TTL', fallback=64))
-        self.retry_count = int(config.get('ping', 'Retries', fallback=1))
-        self.interval = float(config.get('ping', 'Interval', fallback=1))
-        self.timeout = float(config.get('ping', 'timeout', fallback=1))
+        ping_args.setdefault('ttl', int(config.get('ping', 'ttl', fallback=1)))
+        ping_args.setdefault('timeout', float(config.get('ping', 'timeout', fallback=1)))
+        ping_args.setdefault('interval', float(config.get('ping', 'interval', fallback=1)))
+        ping_args.setdefault('retry_count', float(config.get('ping', 'retry_count', fallback=1)))
+        self.ttl = ping_args['ttl']
+        self.timeout = ping_args['timeout']
+        self.interval = ping_args['interval']
+        self.retry_count = ping_args['retry_count']
 
         # 表示パラメータ
         self.view_recent = int(config.get('tui', 'view_recent', fallback=1))
@@ -324,18 +328,45 @@ if __name__ == '__main__':
         e.g.) -l 1.1.1.1,8.8.8.8
         """).strip())
 
+    parser.add_argument('--ttl', type=int, help=dedent(
+        """
+        ping ttl
+        e.g.) --ttl 64
+        """).strip())
+
+    parser.add_argument('--timeout', type=float, help=dedent(
+        """
+        ping timeout
+        e.g.) --timeout 1
+        """).strip())
+
     args = parser.parse_args()
 
+    # pingパラメータ設定
+    ping_args = {}
+    if args.ttl is not None:
+        if not 1 <= args.ttl <= 255:
+            parser.error(f"TTL value {args.ttl} is out of range (must be between 1 and 255)")
+
+        ping_args['ttl'] = args.ttl
+
+
+    if args.timeout is not None:
+        if not 0.1 <= args.timeout <= 100:
+            parser.error(f"Timeout value {args.timeout} is out of range (must be between 0.1 and 100)")
+
+        ping_args['timeout'] = args.timeout
+
     if args.list:
-        mp.setting(dst_args=args.list)
+        mp.setting(dst_args=args.list, ping_args=ping_args)
     elif args.file:
         if not mp.file_exsit(args.file):
             parser.error(f'{Path(args.file).resolve()} is not Found')
             exit()
-        mp.setting(dst_file=Path(args.file))
+        mp.setting(dst_file=Path(args.file), ping_args=ping_args)
 
     else:
-        mp.setting()
+        mp.setting(ping_args=ping_args)
 
     mp.run()
 
